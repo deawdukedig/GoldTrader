@@ -393,19 +393,23 @@ def main() -> None:
 
 
     elif args.command == "analyze-backtest":
-        target_path = Path(args.path)
-        if not target_path.exists():
-            print(f"❌ Specified path does not exist: {args.path}")
-            sys.exit(1)
-
-        html_files = []
-        if target_path.is_dir():
-            html_files = sorted(list(target_path.glob("*.html")))
-            if not html_files:
-                print(f"❌ No .html backtest reports found in directory: {args.path}")
-                sys.exit(1)
+        import glob
+        pattern_matches = [Path(p) for p in glob.glob(args.path)] if any(char in args.path for char in ["*", "?", "["]) else []
+        if pattern_matches:
+            html_files = sorted(pattern_matches)
         else:
-            html_files = [target_path]
+            target_path = Path(args.path)
+            if not target_path.exists():
+                print(f"❌ Specified path does not exist: {args.path}")
+                sys.exit(1)
+
+            if target_path.is_dir():
+                html_files = sorted(list(target_path.glob("*.html")))
+                if not html_files:
+                    print(f"❌ No .html backtest reports found in directory: {args.path}")
+                    sys.exit(1)
+            else:
+                html_files = [target_path]
 
         print(f"🔍 Analyzing MT5 Backtest Report(s): {len(html_files)} file(s) found...")
 
@@ -427,6 +431,22 @@ def main() -> None:
                     filename=out_name,
                 )
                 print(f"✅ Clean Comparative Report exported to: ./output/{out_path.name}")
+
+            if args.html:
+                # Generate comparative dashboard
+                comp_html = MT5BacktestAnalyzer.generate_comparative_html_dashboard(html_files)
+                comp_html_path = Path("output") / "dashboard_comparison.html"
+                comp_html_path.parent.mkdir(parents=True, exist_ok=True)
+                comp_html_path.write_text(comp_html, encoding="utf-8")
+                print("📊 Interactive Comparative HTML Dashboard exported to: ./output/dashboard_comparison.html")
+
+                # Also generate individual dashboards for each report
+                for hf in html_files:
+                    rep_single = MT5BacktestAnalyzer.parse_report(hf)
+                    ind_html = MT5BacktestAnalyzer.generate_html_dashboard(rep_single)
+                    ind_name = f"dashboard_{hf.stem}.html"
+                    (Path("output") / ind_name).write_text(ind_html, encoding="utf-8")
+                    print(f"   - Individual dashboard: ./output/{ind_name}")
         else:
             single_file = html_files[0]
             rep = MT5BacktestAnalyzer.parse_report(single_file)

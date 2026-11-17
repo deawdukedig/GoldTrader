@@ -50,3 +50,8 @@ output/*
 
 # Experts
 experts/*
+
+# Scratch & Temp Helper Scripts
+scratch/
+analysis-report/
+output.zip
