@@ -83,7 +83,7 @@ flowchart TD
 ### 📋 Strategy Product Manager (`strategy_pm`)
 * **Role:** Strategy Specification & Acceptance Criteria Definition
 * **Profile:** Analytical, grounded, market-savvy.
-* **Skills Reference:** `.agents/skills/trading-spec-driven/SKILL.md`
+* **Skills Reference:** `.agents/skills/trading-spec-driven/SKILL.md`, `.agents/skills/macro-market-regime/SKILL.md`
 * **Configuration:**
   ```yaml
   name: strategy_pm
@@ -93,7 +93,7 @@ flowchart TD
 ### 📐 Quantitative Architect (`quant_architect`)
 * **Role:** Market Microstructure Analysis & Mathematical Modeling
 * **Profile:** Deep academic & practical quant developer, Sharpe/Sortino specialist.
-* **Skills Reference:** `.agents/skills/quant-analyst/SKILL.md`, `.agents/skills/mt5-backtest-analyzer/SKILL.md`, `.agents/skills/backtest-architect/SKILL.md`, `.agents/skills/backtesting-frameworks/SKILL.md`
+* **Skills Reference:** `.agents/skills/quant-analyst/SKILL.md`, `.agents/skills/mt5-backtest-analyzer/SKILL.md`, `.agents/skills/backtest-architect/SKILL.md`, `.agents/skills/backtesting-frameworks/SKILL.md`, `.agents/skills/macro-market-regime/SKILL.md`
 * **Configuration:**
   ```yaml
   name: quant_architect
